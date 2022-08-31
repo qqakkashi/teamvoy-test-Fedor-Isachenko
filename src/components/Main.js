@@ -3,23 +3,26 @@ import {
   Container,
   PokemonMiniCardsContainer,
   PokemonMiniCards,
-  PokemonCard,
   Button,
 } from "./main/main.styled";
-import PokemonContainer from "./main/pokeContainer";
+import PokemonContainer from "./main/PokemonContainer";
+
+import PokemonCard from "./main/PokemonCard";
 
 let allPokemons = [];
 
 export const Main = () => {
   const [data, setData] = useState([]);
   const [pokemons, setPokemons] = useState([]);
+
   const [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon/?limit=12");
-  const addData = (data, pokemons) => {
+  const [types, setType] = useState([]);
+  const typeUrl = "https://pokeapi.co/api/v2/type";
+  const addData = (data, pokemon) => {
     setData(data);
-    console.log(allPokemons.length);
-    JSON.stringify(allPokemons) === JSON.stringify(pokemons)
-      ? (allPokemons = [...pokemons])
-      : (allPokemons = [...allPokemons, ...pokemons]);
+    JSON.stringify(allPokemons) === JSON.stringify(pokemon)
+      ? (allPokemons = [...pokemon])
+      : (allPokemons = [...allPokemons, ...pokemon]);
 
     setPokemons(allPokemons);
   };
@@ -31,20 +34,34 @@ export const Main = () => {
     } catch (error) {
       console.log(error);
     }
+    try {
+      fetch(typeUrl)
+        .then((response) => response.json())
+        .then((data) => setType(data));
+    } catch (error) {
+      console.log(error);
+    }
   }, [url]);
   const loadMore = () => {
     setUrl(data?.next);
   };
+
   return (
     <main>
       <Container>
         <PokemonMiniCardsContainer>
           <PokemonMiniCards>
             {pokemons?.map((data) => {
-              return <PokemonContainer name={data.name} url={data.url} />;
+              return (
+                <PokemonContainer
+                  key={data.name}
+                  name={data.name}
+                  url={data.url}
+                />
+              );
             })}
           </PokemonMiniCards>
-          <PokemonCard>12312312312</PokemonCard>
+          <PokemonCard />
         </PokemonMiniCardsContainer>
         <Button onClick={() => loadMore()}>load more</Button>
       </Container>
