@@ -18,18 +18,20 @@ export const PokemonMiniCardsContainer = styled.div`
 `;
 
 export const PokemonMiniCards = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 280px);
   max-width: 1000px;
-  flex-direction: row;
   margin: 0px auto;
-  flex-wrap: wrap;
   height: 700px;
   overflow: auto;
 
   @media screen and (max-width: 1440px) {
     width: 700px;
+    grid-template-columns: repeat(2, 350px);
   }
   @media screen and (max-width: 1110px) {
+    grid-template-columns: repeat(1, 325px);
+
     width: 325px;
     height: 720px;
   }
@@ -42,9 +44,7 @@ export const PokemonChosenCard = styled.div`
   border-radius: 20px;
   margin: 15px auto;
   max-width: 400px;
-  @media screen and (max-width: 768px) {
-    height: 720px;
-  }
+  height: 780px;
   padding: 10px 50px;
   box-shadow: 0px 0px 26px -4px rgba(0, 0, 0, 0.3);
 `;

@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import PokemonsMiniCard from "./PokemonsMiniCard";
-
-let allData = [];
+import { useSelector } from "react-redux";
+import { selectType } from "../../store/pokemonSlice";
 export const PokemonContainer = (props) => {
+  const type = useSelector(selectType);
   const [pokemonData, setPokemonData] = useState([]);
-  const addPokemonData = (data) => {
-    allData = [data];
-    setPokemonData(allData);
-  };
   useEffect(() => {
     try {
       fetch(props.url)
         .then((response) => response.json())
-        .then((data) => addPokemonData(data));
+        .then((data) => setPokemonData([data]));
     } catch (error) {
       console.log(error);
     }
   }, [props.url]);
-  return pokemonData.map((pokemonData) => {
-    return (
+  return pokemonData?.map((pokemonData) => {
+    return type !== "" ? (
+      pokemonData.types.map((item) => {
+        return item.type.name === type ? (
+          <PokemonsMiniCard key={pokemonData.name} pokemonData={pokemonData} />
+        ) : null;
+      })
+    ) : (
       <PokemonsMiniCard key={pokemonData.name} pokemonData={pokemonData} />
     );
   });

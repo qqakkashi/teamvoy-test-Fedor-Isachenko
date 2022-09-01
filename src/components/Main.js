@@ -6,7 +6,8 @@ import {
   Button,
 } from "./main/main.styled";
 import PokemonContainer from "./main/PokemonContainer";
-
+import { useSelector } from "react-redux";
+import { selectType } from "../store/pokemonSlice";
 import PokemonCard from "./main/PokemonCard";
 
 let allPokemons = [];
@@ -14,10 +15,8 @@ let allPokemons = [];
 export const Main = () => {
   const [data, setData] = useState([]);
   const [pokemons, setPokemons] = useState([]);
-
+  const type = useSelector(selectType);
   const [url, setUrl] = useState("https://pokeapi.co/api/v2/pokemon/?limit=12");
-  const [types, setType] = useState([]);
-  const typeUrl = "https://pokeapi.co/api/v2/type";
   const addData = (data, pokemon) => {
     setData(data);
     JSON.stringify(allPokemons) === JSON.stringify(pokemon)
@@ -31,13 +30,6 @@ export const Main = () => {
       fetch(url)
         .then((response) => response.json())
         .then((data) => addData(data, data.results));
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      fetch(typeUrl)
-        .then((response) => response.json())
-        .then((data) => setType(data));
     } catch (error) {
       console.log(error);
     }

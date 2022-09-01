@@ -6,6 +6,7 @@ import {
   TableLine,
   PokemonName,
   StateMsg,
+  PokemonMiniCardTypesText,
 } from "./main.styled";
 import { useSelector } from "react-redux";
 import { selectPokemon } from "../../store/pokemonSlice";
@@ -20,30 +21,36 @@ export const PokemonCard = () => {
         {pokemon.name} #{pokemon.id}
       </PokemonName>
       <PokemonStatsTable>
-        <tr>
-          <TableLine>type </TableLine>
-          <TableLine>
-            {pokemon.types.map((item) => {
-              return item.type.name + " ";
-            })}
-          </TableLine>
-        </tr>
-        {pokemon.stats.map((stat) => {
-          return (
-            <tr>
-              <TableLine>{stat.stat.name}</TableLine>{" "}
-              <TableLine>{stat.base_stat}</TableLine>
-            </tr>
-          );
-        })}
-        <tr>
-          <TableLine>weight </TableLine>
-          <TableLine>{pokemon.weight}</TableLine>
-        </tr>
-        <tr>
-          <TableLine>total moves </TableLine>
-          <TableLine>{pokemon.moves.length}</TableLine>
-        </tr>
+        <tbody>
+          <tr>
+            <TableLine>type </TableLine>
+            <TableLine>
+              {pokemon.types.map((item) => {
+                return (
+                  <PokemonMiniCardTypesText key={item.type.name}>
+                    {item.type.name + " "}
+                  </PokemonMiniCardTypesText>
+                );
+              })}
+            </TableLine>
+          </tr>
+          {pokemon.stats.map((stat) => {
+            return (
+              <tr key={stat.stat.name}>
+                <TableLine>{stat.stat.name}</TableLine>{" "}
+                <TableLine>{stat.base_stat}</TableLine>
+              </tr>
+            );
+          })}
+          <tr>
+            <TableLine>weight </TableLine>
+            <TableLine>{pokemon.weight}</TableLine>
+          </tr>
+          <tr>
+            <TableLine>total moves </TableLine>
+            <TableLine>{pokemon.moves.length}</TableLine>
+          </tr>
+        </tbody>
       </PokemonStatsTable>
     </PokemonChosenCard>
   ) : (
